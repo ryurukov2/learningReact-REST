@@ -1,9 +1,11 @@
-const PageButtons = ({ currentPage, numPages, setCurrentPage, preChange }) => {
-//   console.log(currentPage);
+import { preChangeSteps } from "./HelperFunctions";
+
+const PageButtons = ({ currentPage, numPages, setCurrentPage }) => {
+  // console.log(numPages);
   const buttons = [...Array(numPages).keys()].map((_, i) => {
     return (
       <button key={i} onClick={() => {
-        preChange()
+        preChangeSteps()
         setCurrentPage(i + 1)
       }}>
         {i + 1}
@@ -15,7 +17,7 @@ const PageButtons = ({ currentPage, numPages, setCurrentPage, preChange }) => {
     <div>
         {currentPage > 1 && (
             <button onClick={() => {
-                preChange()
+                preChangeSteps()
                 setCurrentPage(currentPage - 1)}
             }>
                 Previous
@@ -24,7 +26,7 @@ const PageButtons = ({ currentPage, numPages, setCurrentPage, preChange }) => {
         {buttons}
         {currentPage < numPages && (
             <button onClick={() => {
-                preChange()
+                preChangeSteps()
                 setCurrentPage(currentPage + 1)}
             }>
                 Next

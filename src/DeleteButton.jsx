@@ -1,7 +1,22 @@
 import React from "react";
-export function DeleteButton({
-  handleDelete, projectId
-}) {
-  return <button onClick={() => handleDelete(projectId)}>Delete</button>;
+
+
+
+const handleDelete = (id, handleProjectChange) => {
+  const scrollPos = window.scrollY;
+  sessionStorage.setItem('scrollPos', scrollPos.toString());
+  fetch("http://localhost:8000/api/projects/remove/" + id, {
+    method: "DELETE",
+  })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      // window.scrollTo(0, sessionStorage.getItem("scrollPos"));
+      handleProjectChange();
+    });
+};
+export function DeleteButton({  projectId, handleProjectChange}) {
+
+  return <button onClick={() => handleDelete(projectId, handleProjectChange)}>Delete</button>;
 }
-  
