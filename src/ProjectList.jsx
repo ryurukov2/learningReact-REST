@@ -13,8 +13,12 @@ const ProjectList = (props) => {
         numPages={props.pages}
         setCurrentPage={props.setCurrentPage}
       />
+      <div className="columns-2">
+        <h1>Name:</h1>
+        <h1>Description:</h1>
+      </div>
       {props.projects.map((project) => (
-        <div key={project.id}>
+        <div key={project.id} >
           <Link to={`/projects/${project.id}`}>
             <Project project={project} />
           </Link>

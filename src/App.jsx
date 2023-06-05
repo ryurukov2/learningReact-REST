@@ -1,7 +1,7 @@
 import { preChangeSteps } from "./HelperFunctions";
 import { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
-import "./styles.css";
+import "./index.css";
 import ProjectList from "./ProjectList";
 import ProjectDetails from "./ProjectDetails";
 
