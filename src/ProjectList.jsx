@@ -17,8 +17,10 @@ const ProjectList = (props) => {
         <h1>Name:</h1>
         <h1>Description:</h1>
       </div>
+      <ul>
       {props.projects.map((project) => (
-        <div key={project.id} >
+        <li key={project.id}>
+<div className="flex justify-between items-center w-full">
           <Link to={`/projects/${project.id}`}>
             <Project project={project} />
           </Link>
@@ -27,7 +29,9 @@ const ProjectList = (props) => {
             projectId={project.id}
           />
         </div>
+        </li>
       ))}
+      </ul>
       <PageButtons
         currentPage={props.currentPage}
         numPages={props.pages}

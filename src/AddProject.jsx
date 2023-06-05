@@ -42,7 +42,7 @@ const AddProject = (props) => {
                 Description:
                 <input type="text" value={description} onChange={e => setDescription(e.target.value)} required />
             </label>
-            <input type="submit" value="Add Project" />
+            <input className="btn-primary" type="submit" value="Add Project" />
         </form>
     );
 }

@@ -18,5 +18,5 @@ const handleDelete = (id, handleProjectChange) => {
 };
 export function DeleteButton({  projectId, handleProjectChange}) {
 
-  return <button className="btn-delete" onClick={() => handleDelete(projectId, handleProjectChange)}>Delete</button>;
+  return <button className="btn-primary" onClick={() => handleDelete(projectId, handleProjectChange)}>Delete</button>;
 }

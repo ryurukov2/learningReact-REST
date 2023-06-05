@@ -9,7 +9,13 @@ const deleteFetch = async (task) => {
   return r;
 };
 
-const updateFetch = async (id, updatedTask, relatedTasks, setRelatedTasks, fetchLoading) => {
+const updateFetch = async (
+  id,
+  updatedTask,
+  relatedTasks,
+  setRelatedTasks,
+  fetchLoading
+) => {
   fetch(`http://localhost:8000/api/task/${id}/edit`, {
     method: "PUT",
     headers: {
@@ -25,7 +31,7 @@ const updateFetch = async (id, updatedTask, relatedTasks, setRelatedTasks, fetch
         }
         return t;
       });
-      fetchLoading.current=null;
+      fetchLoading.current = null;
       setRelatedTasks(newTasksList);
     })
     .catch((er) => console.log(er));
@@ -40,7 +46,8 @@ const dataFetch = async (id, setProjectName, setRelatedTasks) => {
     .then((r) => r.json())
     .then((r) => {
       setRelatedTasks(r);
-    }).catch((er) => console.log(er));
+    })
+    .catch((er) => console.log(er));
 };
 
 const ProjectDetails = () => {
@@ -83,7 +90,6 @@ const ProjectDetails = () => {
     fetchLoading.current = id;
     setIsEditing(null);
     updateFetch(id, task, relatedTasks, setRelatedTasks, fetchLoading);
-    
   };
 
   const toggleBtn = () => {
@@ -103,69 +109,84 @@ const ProjectDetails = () => {
         <h1>{projectName.name}</h1>
         <p>Description: {projectName.description}</p>
         <h2>Tasks:</h2>
-        {relatedTasks.map((relatedTask) => (
-          <div key={relatedTask.id}>
-            {isEditing === relatedTask.id ? (
-              <>
-                <input
-                  type="text"
-                  name="description"
-                  value={task.description}
-                  onChange={handleInputChange}
-                />
-                /
-                <select
-                  name="priority"
-                  value={task.priority}
-                  onChange={handleInputChange}
-                >
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-                /
-                <select
-                  name="completion_status"
-                  value={task.completion_status}
-                  onChange={handleInputChange}
-                >
-                  <option value="TODO">TODO</option>
-                  <option value="INPROGRESS">IN PROGRESS</option>
-                  <option value="ONHOLD">ON HOLD</option>
-                  <option value="RESOLVED">RESOLVED</option>
-                </select>
-                <button
-                  onClick={() => {
-                    handleDoneClick();
-                  }}
-                >
-                  Done
-                </button>
-                <button onClick={() => handleDeleteClick()}>Delete</button>
-              </>
-            ) : (
-              <>
-                {fetchLoading.current === relatedTask.id ? (
-                  <span>Loading...</span>
-                ) : (
+        <ul>
+          {relatedTasks.map((relatedTask) => (
+            <li key={relatedTask.id}>
+              <div className="flex justify-between items-center w-full">
+                {isEditing === relatedTask.id ? (
                   <>
-                    <span>{relatedTask.description}</span> /
-                    <span> {relatedTask.priority}</span> /
-                    <span> {relatedTask.completion_status}</span>
-                    <button onClick={() => handleEditOnclick(relatedTask)}>
-                      Edit
+                    <input
+                      type="text"
+                      name="description"
+                      value={task.description}
+                      onChange={handleInputChange}
+                    />
+                  
+                    <select
+                      name="priority"
+                      value={task.priority}
+                      onChange={handleInputChange}
+                    >
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                  
+                    <select
+                      name="completion_status"
+                      value={task.completion_status}
+                      onChange={handleInputChange}
+                    >
+                      <option value="TODO">TODO</option>
+                      <option value="INPROGRESS">IN PROGRESS</option>
+                      <option value="ONHOLD">ON HOLD</option>
+                      <option value="RESOLVED">RESOLVED</option>
+                    </select>
+                    <button
+                      className="btn-primary"
+                      onClick={() => {
+                        handleDoneClick();
+                      }}
+                    >
+                      Done
+                    </button>
+                    <button
+                      className="btn-primary"
+                      onClick={() => handleDeleteClick()}
+                    >
+                      Delete
                     </button>
                   </>
+                ) : (
+                  <>
+                    {fetchLoading.current === relatedTask.id ? (
+                      <span>Loading...</span>
+                    ) : (
+                      <>
+                        <span>{relatedTask.description}</span>
+                        <span> {relatedTask.priority}</span>
+                        <span> {relatedTask.completion_status}</span>
+                        <button
+                          className="btn-primary"
+                          onClick={() => handleEditOnclick(relatedTask)}
+                        >
+                          Edit
+                        </button>
+                      </>
+                    )}
+                  </>
                 )}
-              </>
-            )}
-          </div>
-        ))}
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
-      <div>
-        <button onClick={toggleBtn}>Add New Task</button>
+      <div className="">
+        <button className="btn-primary"  onClick={toggleBtn}>
+          Add New Task
+        </button>
       </div>
       <div>
         {addTaskBtn === true ? (
