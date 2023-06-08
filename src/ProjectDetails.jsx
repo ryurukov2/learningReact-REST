@@ -1,3 +1,4 @@
+import { Loading } from "./Loading";
 import { AddTask } from "./AddTask";
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
@@ -104,10 +105,14 @@ const ProjectDetails = () => {
   }, []);
 
   return (
-    <div>
+    <div className="relative">
       <div>
-        <h1>{projectName.name}</h1>
-        <p>Description: {projectName.description}</p>
+        <h1 className="rounded-md border-2 border-slate-500 text-center overflow-clip break-words">
+          {projectName.name}
+        </h1>
+        <p className="rounded-md border-2 border-slate-500 text-center overflow-clip break-words">
+          Description: <br /> {projectName.description}
+        </p>
         <h2>Tasks:</h2>
         <ul>
           {relatedTasks.map((relatedTask) => (
@@ -115,13 +120,20 @@ const ProjectDetails = () => {
               <div className="flex justify-between items-center w-full">
                 {isEditing === relatedTask.id ? (
                   <>
-                    <input
+                    {/* <input
+                      className="w-2/4"
                       type="text"
                       name="description"
                       value={task.description}
                       onChange={handleInputChange}
+                    /> */}
+                    <textarea
+                      className="w-2/4"
+                      rows={Math.ceil(task.description.length / 50)}
+                      name="description"
+                      value={task.description}
+                      onChange={handleInputChange}
                     />
-                  
                     <select
                       name="priority"
                       value={task.priority}
@@ -133,7 +145,7 @@ const ProjectDetails = () => {
                       <option value="4">4</option>
                       <option value="5">5</option>
                     </select>
-                  
+
                     <select
                       name="completion_status"
                       value={task.completion_status}
@@ -162,12 +174,15 @@ const ProjectDetails = () => {
                 ) : (
                   <>
                     {fetchLoading.current === relatedTask.id ? (
-                      <span>Loading...</span>
+                      <Loading />
                     ) : (
                       <>
-                        <span>{relatedTask.description}</span>
-                        <span> {relatedTask.priority}</span>
-                        <span> {relatedTask.completion_status}</span>
+                        <span className="w-3/4">{relatedTask.description}</span>
+                        <span className="w-1/5"> {relatedTask.priority}</span>
+                        <span className="w-1/3 text-center">
+                          
+                          {relatedTask.completion_status}
+                        </span>
                         <button
                           className="btn-primary"
                           onClick={() => handleEditOnclick(relatedTask)}
@@ -183,12 +198,12 @@ const ProjectDetails = () => {
           ))}
         </ul>
       </div>
-      <div className="">
-        <button className="btn-primary"  onClick={toggleBtn}>
+      <div className="text-center">
+        <button className="btn-primary" onClick={toggleBtn}>
           Add New Task
         </button>
       </div>
-      <div>
+      <div className="flex flex-col items-center">
         {addTaskBtn === true ? (
           <AddTask
             id={id}

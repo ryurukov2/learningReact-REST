@@ -13,24 +13,25 @@ const ProjectList = (props) => {
         numPages={props.pages}
         setCurrentPage={props.setCurrentPage}
       />
-      <div className="columns-2">
-        <h1>Name:</h1>
-        <h1>Description:</h1>
+      <div className="columns-2 w-4/5">
+        <h1>Name</h1>
+        <h1>Description</h1>
       </div>
       <ul>
-      {props.projects.map((project) => (
-        <li key={project.id}>
-<div className="flex justify-between items-center w-full">
-          <Link to={`/projects/${project.id}`}>
-            <Project project={project} />
-          </Link>
-          <DeleteButton
-            handleProjectChange={props.handleProjectChange}
-            projectId={project.id}
-          />
-        </div>
-        </li>
-      ))}
+        {props.projects.map((project) => (
+          <li key={project.id} >
+            <div className="w-auto flex justify-between items-center">
+              <Link to={`/projects/${project.id}`} className="w-11/12">
+                <Project project={project} />
+              </Link>
+              <DeleteButton
+              className=""
+                handleProjectChange={props.handleProjectChange}
+                projectId={project.id}
+              />
+            </div>
+          </li>
+        ))}
       </ul>
       <PageButtons
         currentPage={props.currentPage}

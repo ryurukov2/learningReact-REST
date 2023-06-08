@@ -7,32 +7,10 @@ import ProjectDetails from "./ProjectDetails";
 
 export default function App() {
   const [projects, setProjects] = useState([]);
-  // const scrollPosition = useRef(0);
-  // const [pages, setPages] = useState(0);
-  const pages = useRef(1)
+  const pages = useRef(1);
   const [currentPage, setCurrentPage] = useState(1);
   const PAGINATION_ITEMS = 10;
-  // const handleDelete = (id) => {
-  //   preChangeSteps(scrollPosition);
-  //   fetch("http://localhost:8000/api/projects/remove/" + id, {
-  //     method: "DELETE",
-  //   })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     })
-  //     .finally(() => {
-  //       handleProjectChange();
 
-  //     });
-  // };
-
-  // const fetchProjects = fetchProjects(
-  //   currentPage,
-  //   setProjects,
-  //   setPages,
-  //   PAGINATION_ITEMS,
-  //   scrollPosition
-  // );
   useEffect(() => {
     fetchProjects(currentPage, setProjects, pages, PAGINATION_ITEMS);
   }, [currentPage]);
@@ -42,8 +20,6 @@ export default function App() {
   };
   return (
     <div>
-
-
       <Router>
         <Routes>
           {/* <Route path="/" element={<ProjectList1 />} /> */}
@@ -53,7 +29,6 @@ export default function App() {
               <ProjectList
                 projects={projects}
                 handleProjectChange={handleProjectChange}
-                
                 pages={pages.current}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
@@ -77,13 +52,13 @@ export function fetchProjects(
     .then((r) => r.json())
     .then((data) => {
       setProjects(data.results);
-      console.log(data.count)
-      if(pages.current !== Math.ceil(data.count / PAGINATION_ITEMS)){
-        pages.current = Math.ceil(data.count / PAGINATION_ITEMS)
+      console.log(data.count);
+      if (pages.current !== Math.ceil(data.count / PAGINATION_ITEMS)) {
+        pages.current = Math.ceil(data.count / PAGINATION_ITEMS);
       }
-      
+
       // setPages(Math.ceil(data.count / PAGINATION_ITEMS));
       window.scrollTo(0, sessionStorage.getItem("scrollPos"));
-      sessionStorage.setItem("scrollPos", 0)
+      sessionStorage.setItem("scrollPos", 0);
     });
 }

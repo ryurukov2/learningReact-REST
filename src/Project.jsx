@@ -4,7 +4,7 @@ export function Project({project}) {
     <div className="columns-2">
       {" "}
       <h2>{project.name}</h2>
-      <p>{project.description}</p>
+      <p className="truncate">{project.description}</p>
     </div>
   );
 }

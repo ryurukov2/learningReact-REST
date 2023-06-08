@@ -4,7 +4,7 @@ const PageButtons = ({ currentPage, numPages, setCurrentPage }) => {
   // console.log(numPages);
   const buttons = [...Array(numPages).keys()].map((_, i) => {
     return (
-      <button key={i} onClick={() => {
+      <button className="px-2 py-0 m-0.5 bg-gray-500 text-white rounded-lg focus:outline-none hover:bg-gray-700" key={i} onClick={() => {
         preChangeSteps()
         setCurrentPage(i + 1)
       }}>
@@ -16,7 +16,7 @@ const PageButtons = ({ currentPage, numPages, setCurrentPage }) => {
   return (
     <div>
         {currentPage > 1 && (
-            <button onClick={() => {
+            <button className="px-2 py-0 m-0.5 bg-gray-500 text-white rounded-lg focus:outline-none hover:bg-gray-700" onClick={() => {
                 preChangeSteps()
                 setCurrentPage(currentPage - 1)}
             }>
@@ -25,7 +25,7 @@ const PageButtons = ({ currentPage, numPages, setCurrentPage }) => {
         )}
         {buttons}
         {currentPage < numPages && (
-            <button onClick={() => {
+            <button className="px-2 py-0 m-0.5 bg-gray-500 text-white rounded-lg focus:outline-none hover:bg-gray-700" onClick={() => {
                 preChangeSteps()
                 setCurrentPage(currentPage + 1)}
             }>

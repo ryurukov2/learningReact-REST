@@ -10,7 +10,7 @@
   h2 {
     @apply text-xl;
   }
-  input, select{
+  input, select, textarea{
     @apply text-black;
   }
   ul>li{
