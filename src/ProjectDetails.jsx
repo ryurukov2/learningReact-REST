@@ -113,6 +113,21 @@ const ProjectDetails = () => {
         <p className="rounded-md border-2 border-slate-500 text-center overflow-clip break-words">
           Description: <br /> {projectName.description}
         </p>
+        <div className="text-end">
+          <button className="btn-primary" onClick={toggleBtn}>
+            Add New Task
+          </button>
+        </div>
+
+        <div className="flex flex-col items-center">
+          {addTaskBtn === true ? (
+            <AddTask
+              id={id}
+              addTaskToList={addTaskToList}
+              toggleBtn={toggleBtn}
+            />
+          ) : null}
+        </div>
         <h2>Tasks:</h2>
         <ul>
           {relatedTasks.map((relatedTask) => (
@@ -120,13 +135,6 @@ const ProjectDetails = () => {
               <div className="flex justify-between items-center w-full">
                 {isEditing === relatedTask.id ? (
                   <>
-                    {/* <input
-                      className="w-2/4"
-                      type="text"
-                      name="description"
-                      value={task.description}
-                      onChange={handleInputChange}
-                    /> */}
                     <textarea
                       className="w-2/4"
                       rows={Math.ceil(task.description.length / 50)}
@@ -180,7 +188,6 @@ const ProjectDetails = () => {
                         <span className="w-3/4">{relatedTask.description}</span>
                         <span className="w-1/5"> {relatedTask.priority}</span>
                         <span className="w-1/3 text-center">
-                          
                           {relatedTask.completion_status}
                         </span>
                         <button
@@ -197,20 +204,6 @@ const ProjectDetails = () => {
             </li>
           ))}
         </ul>
-      </div>
-      <div className="text-center">
-        <button className="btn-primary" onClick={toggleBtn}>
-          Add New Task
-        </button>
-      </div>
-      <div className="flex flex-col items-center">
-        {addTaskBtn === true ? (
-          <AddTask
-            id={id}
-            addTaskToList={addTaskToList}
-            toggleBtn={toggleBtn}
-          />
-        ) : null}
       </div>
     </div>
   );

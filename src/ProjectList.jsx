@@ -3,11 +3,23 @@ import { Link } from "react-router-dom";
 import { DeleteButton } from "./DeleteButton";
 import PageButtons from "./PageButtons";
 import AddProject from "./AddProject";
+import { useState } from "react";
 const ProjectList = (props) => {
   // console.log(props.pages);
+  const [toggleAdd, setToggleAdd] = useState(false)
   return (
     <div>
-      <AddProject onNewProject={props.handleProjectChange} />
+      <div className="text-end">
+        <button className="btn-primary" onClick={() => setToggleAdd(!toggleAdd)}>
+          Add Project
+        </button>
+      </div>
+      {toggleAdd ? (
+      <AddProject onNewProject={props.handleProjectChange} setToggleAdd={setToggleAdd} />
+      ) : (
+        null
+      )}
+
       <PageButtons
         currentPage={props.currentPage}
         numPages={props.pages}

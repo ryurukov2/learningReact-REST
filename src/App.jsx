@@ -1,4 +1,3 @@
-import { preChangeSteps } from "./HelperFunctions";
 import { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import "./index.css";
@@ -9,7 +8,7 @@ export default function App() {
   const [projects, setProjects] = useState([]);
   const pages = useRef(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const PAGINATION_ITEMS = 10;
+  const PAGINATION_ITEMS = 20;
 
   useEffect(() => {
     fetchProjects(currentPage, setProjects, pages, PAGINATION_ITEMS);
@@ -45,7 +44,6 @@ export function fetchProjects(
   currentPage,
   setProjects,
   pages,
-  // setPages,
   PAGINATION_ITEMS
 ) {
   fetch(`http://localhost:8000/api/projects/list?page=${currentPage}`)
@@ -57,7 +55,7 @@ export function fetchProjects(
         pages.current = Math.ceil(data.count / PAGINATION_ITEMS);
       }
 
-      // setPages(Math.ceil(data.count / PAGINATION_ITEMS));
+  
       window.scrollTo(0, sessionStorage.getItem("scrollPos"));
       sessionStorage.setItem("scrollPos", 0);
     });

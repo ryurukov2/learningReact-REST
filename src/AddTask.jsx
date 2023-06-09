@@ -37,7 +37,7 @@ export function AddTask({ id, addTaskToList, toggleBtn }) {
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-80 flex items-center justify-center" onClick={toggleBtn}> 
-    <div className="relative w-fit h-fit border-2 bg-gray-700 flex bg-opacity-100 justify-center" onClick={(e) => e.stopPropagation()}>
+    <div className="relative rounded-2xl p-8 w-fit h-fit border-2 bg-gray-700 flex bg-opacity-100 justify-center" onClick={(e) => e.stopPropagation()}>
       <form onSubmit={handleSubmit} className=" flex items-center ">
         <div>
         <h2>Description</h2>
@@ -51,47 +51,50 @@ export function AddTask({ id, addTaskToList, toggleBtn }) {
         </div>
         <div>
         <h2>Priority</h2>
-          <input
+         <label htmlFor="1"> <input
             type="radio"
             name="priority"
             value="1"
-            id=""
+            id="1"
+            // onClick={(e) => e.currentTarget.onOptionChange}
             onChange={onOptionChange}
           />{" "}
-          Minor (1) <br />
-          <input
+          Minor (1) 
+          </label><br />
+          <label htmlFor="2"><input
             type="radio"
             name="priority"
             value="2"
-            id=""
+            id="2"
             onChange={onOptionChange}
           />{" "}
-          Can wait (2) <br />
-          <input
+          Can wait (2) </label><br />
+          <label htmlFor="3"><input
             type="radio"
             name="priority"
             value="3"
-            id=""
+            id="3"
             onChange={onOptionChange}
           />{" "}
-          Important (3) <br />
-          <input
+          Important (3)</label> <br />
+          <label htmlFor="4"><input
             type="radio"
             name="priority"
             value="4"
-            id=""
+            id="4"
             onChange={onOptionChange}
           />{" "}
-          Urgent (4) <br />
-          <input
+          Urgent (4)
+          </label> <br />
+          <label htmlFor="5"><input
             type="radio"
             name="priority"
             value="5"
-            id=""
+            id="5"
             onChange={onOptionChange}
           />{" "}
           Vital (5)
-        </div>
+          </label></div>
         <input className="btn-primary" type="submit" value="Add Task" />
       </form>
       </div>
