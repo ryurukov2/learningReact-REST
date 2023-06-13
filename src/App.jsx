@@ -1,8 +1,10 @@
+import { Navbar } from "./Navbar";
 import { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import "./index.css";
 import ProjectList from "./ProjectList";
 import ProjectDetails from "./ProjectDetails";
+import HomePage from "./HomePage";
 
 export default function App() {
   const [projects, setProjects] = useState([]);
@@ -20,8 +22,9 @@ export default function App() {
   return (
     <div>
       <Router>
+        <Navbar />
         <Routes>
-          {/* <Route path="/" element={<ProjectList1 />} /> */}
+          <Route path="/" element={<HomePage />} />
           <Route
             path="/projects"
             element={
@@ -55,7 +58,6 @@ export function fetchProjects(
         pages.current = Math.ceil(data.count / PAGINATION_ITEMS);
       }
 
-  
       window.scrollTo(0, sessionStorage.getItem("scrollPos"));
       sessionStorage.setItem("scrollPos", 0);
     });

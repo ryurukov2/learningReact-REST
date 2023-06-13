@@ -1,9 +1,12 @@
+import { lazy } from "react";
 import { TaskDisplay } from "./TaskDisplay";
 import { TaskEdit } from "./TaskEdit";
 import { Loading } from "./Loading";
-import { AddTask } from "./AddTask";
+// import { AddTask } from "./AddTask";
+const AddTask = lazy(() => import("./AddTask.jsx"));
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { Suspense } from "react";
 
 const deleteFetch = async (task) => {
   const r = await fetch(`http://localhost:8000/api/task/${task.id}/remove`, {
@@ -54,6 +57,7 @@ const dataFetch = async (id, setProjectName, setRelatedTasks) => {
 };
 
 const ProjectDetails = () => {
+  const sortOrderOptions = [null, "desc", "asc"];
   const { id } = useParams();
   const [projectName, setProjectName] = useState([]);
   const [relatedTasks, setRelatedTasks] = useState([]);
@@ -68,8 +72,55 @@ const ProjectDetails = () => {
   const fetchLoading = useRef(null);
   const sortBy = useRef({
     attrib: "id",
-    ord: null,
+    ord: sortOrderOptions[0],
   });
+
+  const statusValues = {
+    TODO: 1,
+    INPROGRESS: 2,
+    ONHOLD: 3,
+    RESOLVED: 4,
+  };
+
+  //this sorting works only for no pagination. if pagination, sorting impl completely different
+  const sortingFunctions = {
+    //returns descending order since it is used first in most cases, and ascending can simply reverse the descending one
+    id: (a, b) => b.id - a.id,
+    priority: (a, b) => b.priority - a.priority,
+    description: (a, b) => b.description.length - a.description.length,
+    status: (a, b) =>
+      statusValues[b.completion_status] - statusValues[a.completion_status],
+  };
+  const orderFunctions = {
+    //when all sorting filters are removed and value is null, always returns the default way tasks are fetched from server
+    null: (list) => list.sort((a, b) => a.id - b.id),
+    asc: (list) => list.reverse(),
+    desc: (list) => list,
+  };
+  const handleSortClick = (type) => {
+    //handle changing the sort criteria on click
+    if (type !== sortBy.current["attrib"]) {
+      sortBy.current["attrib"] = type;
+      // set to first option (asc)
+      sortBy.current["ord"] = sortOrderOptions[1];
+    } else {
+      sortBy.current["ord"] =
+        sortOrderOptions[
+          (sortOrderOptions.indexOf(sortBy.current["ord"]) + 1) %
+            sortOrderOptions.length
+        ];
+    }
+    sortTasks();
+    console.log(sortBy.current);
+  };
+  const sortTasks = () => {
+    let sortedTasks = [...relatedTasks].sort(
+      sortingFunctions[sortBy.current.attrib]
+    );
+    sortedTasks = orderFunctions[sortBy.current.ord](sortedTasks);
+
+    setRelatedTasks(sortedTasks);
+  };
 
   const handleDeleteClick = () => {
     deleteFetch(task)
@@ -110,22 +161,6 @@ const ProjectDetails = () => {
     dataFetch(id, setProjectName, setRelatedTasks);
   }, []);
 
-  const sortFunc = (property) => {
-    const t = [...relatedTasks];
-    console.log(sortBy);
-    t.sort((a, b) =>
-      a[property] > b[property]
-        ? -1
-        : a[property] === b[property]
-        ? a.description.length > b.description.length
-          ? -1
-          : 1
-        : 1
-    );
-    console.log(t);
-    setRelatedTasks(t);
-  };
-
   return (
     <div className="relative">
       <div>
@@ -145,92 +180,107 @@ const ProjectDetails = () => {
 
         <div className="flex flex-col items-center">
           {addTaskBtn === true ? (
-            <AddTask
-              id={id}
-              addTaskToList={addTaskToList}
-              toggleBtn={toggleBtn}
-            />
+            <Suspense fallback={<Loading />}>
+              <AddTask
+                id={id}
+                addTaskToList={addTaskToList}
+                toggleBtn={toggleBtn}
+              />
+            </Suspense>
           ) : null}
         </div>
         <br />
-        <div className="flex justify-between items-center w-full">
-          <span className="w-3/5" onClick={() => sortFunc()}>
-            Description
-          </span>
-          <span className="w-1/3" onClick={() => sortFunc("priority")}>
-            Priority
-          </span>
-          <span className="w-1/5">Status</span>
-        </div>
-        <div id="non-resolved-display">
-          <ul>
-            {relatedTasks.map((relatedTask) =>
-              relatedTask.completion_status !== "RESOLVED" ? (
-                <li key={relatedTask.id}>
-                  <div className="flex justify-between items-center w-full">
-                    {isEditing === relatedTask.id ? (
-                      <TaskEdit
-                        handleInputChange={handleInputChange}
-                        handleDoneClick={handleDoneClick}
-                        handleDeleteClick={handleDeleteClick}
-                        task={task}
-                      />
-                    ) : (
-                      <>
-                        {fetchLoading.current === relatedTask.id ? (
-                          <Loading />
-                        ) : (
-                          <TaskDisplay
-                            handleEditOnclick={handleEditOnclick}
-                            relatedTask={relatedTask}
+        {relatedTasks.length !== 0 ? (
+          <div>
+            <div className="flex justify-between items-center w-full">
+              <span className="w-3/5">
+                <span onClick={() => handleSortClick("description")}>
+                  Description
+                </span>
+              </span>
+              <span className="w-1/3">
+                <span onClick={() => handleSortClick("priority")}>
+                  Priority
+                </span>
+              </span>
+              <span className="w-1/5">
+                <span onClick={() => handleSortClick("status")}>Status</span>{" "}
+              </span>
+            </div>
+
+            <div id="non-resolved-display">
+              <ul>
+                {relatedTasks.map((relatedTask) =>
+                  relatedTask.completion_status !== "RESOLVED" ? (
+                    <li key={relatedTask.id}>
+                      <div className="flex justify-between items-center w-full">
+                        {isEditing === relatedTask.id ? (
+                          <TaskEdit
+                            handleInputChange={handleInputChange}
+                            handleDoneClick={handleDoneClick}
+                            handleDeleteClick={handleDeleteClick}
+                            task={task}
                           />
+                        ) : (
+                          <>
+                            {fetchLoading.current === relatedTask.id ? (
+                              <Loading />
+                            ) : (
+                              <TaskDisplay
+                                handleEditOnclick={handleEditOnclick}
+                                relatedTask={relatedTask}
+                              />
+                            )}
+                          </>
                         )}
-                      </>
-                    )}
-                  </div>
-                </li>
-              ) : null
-            )}
-          </ul>
-        </div>
-        <div>
-          <h2>Resolved tasks:</h2>
-          <div className="flex justify-between items-center w-full">
-            <span className="w-3/5">Description</span>
-            <span className="w-1/3">Priority</span>
-            <span className="w-1/5">Status</span>
+                      </div>
+                    </li>
+                  ) : null
+                )}
+              </ul>
+            </div>
+            <div>
+              <h2>Resolved tasks:</h2>
+              <div className="flex justify-between items-center w-full">
+                <span className="w-3/5">Description</span>
+                <span className="w-1/3">Priority</span>
+                <span className="w-1/5">Status</span>
+              </div>
+              <ul>
+                {/* possibly refactor to sorting the tasks into different lists and making a new component to display them */}
+                {relatedTasks.map((relatedTask) =>
+                  relatedTask.completion_status === "RESOLVED" ? (
+                    <li key={relatedTask.id}>
+                      <div className="flex justify-between items-center w-full">
+                        {isEditing === relatedTask.id ? (
+                          <TaskEdit
+                            handleInputChange={handleInputChange}
+                            handleDoneClick={handleDoneClick}
+                            handleDeleteClick={handleDeleteClick}
+                            task={task}
+                          />
+                        ) : (
+                          <>
+                            {fetchLoading.current === relatedTask.id ? (
+                              <Loading />
+                            ) : (
+                              <TaskDisplay
+                                handleEditOnclick={handleEditOnclick}
+                                relatedTask={relatedTask}
+                              />
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </li>
+                  ) : null
+                )}
+              </ul>
+            </div>
           </div>
-          <ul>
-            {/* possibly refactor to sorting the tasks into different lists and making a new component to display them */}
-            {relatedTasks.map((relatedTask) =>
-              relatedTask.completion_status === "RESOLVED" ? (
-                <li key={relatedTask.id}>
-                  <div className="flex justify-between items-center w-full">
-                    {isEditing === relatedTask.id ? (
-                      <TaskEdit
-                        handleInputChange={handleInputChange}
-                        handleDoneClick={handleDoneClick}
-                        handleDeleteClick={handleDeleteClick}
-                        task={task}
-                      />
-                    ) : (
-                      <>
-                        {fetchLoading.current === relatedTask.id ? (
-                          <Loading />
-                        ) : (
-                          <TaskDisplay
-                            handleEditOnclick={handleEditOnclick}
-                            relatedTask={relatedTask}
-                          />
-                        )}
-                      </>
-                    )}
-                  </div>
-                </li>
-              ) : null
-            )}
-          </ul>
-        </div>
+        ) : (
+          <div>No tasks for this project yet</div>
+        )}
       </div>
     </div>
   );

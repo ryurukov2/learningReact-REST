@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useState } from "react";
-export function AddTask({ id, addTaskToList, toggleBtn }) {
+export default function AddTask({ id, addTaskToList, toggleBtn }) {
   const [description, setDescription] = useState("");
   const taskPriority = useRef(1);
   const handleSubmit = (event) => {
