@@ -46,8 +46,9 @@ const dataFetch = async (id, setProjectName, setRelatedTasks) => {
   fetch(`http://localhost:8000/api/projects/${id}/`)
     .then((r) => r.json())
     .then((r) => {
+      console.log('test')
       setProjectName(r);
-    });
+    }).catch((er) => console.log(er));;
   fetch(`http://localhost:8000/api/projects/${id}/tasks/`)
     .then((r) => r.json())
     .then((r) => {
@@ -164,10 +165,10 @@ const ProjectDetails = () => {
   return (
     <div className="relative">
       <div>
-        <h1 className="rounded-md border-2 border-slate-500 text-center overflow-clip break-words">
+        <h1 className="base-border">
           {projectName.name}
         </h1>
-        <p className="rounded-md border-2 border-slate-500 text-center overflow-clip break-words">
+        <p className="base-border">
           Description: <br /> {projectName.description}
         </p>
 
@@ -229,6 +230,7 @@ const ProjectDetails = () => {
                               <TaskDisplay
                                 handleEditOnclick={handleEditOnclick}
                                 relatedTask={relatedTask}
+                                canEdit
                               />
                             )}
                           </>
@@ -267,6 +269,7 @@ const ProjectDetails = () => {
                               <TaskDisplay
                                 handleEditOnclick={handleEditOnclick}
                                 relatedTask={relatedTask}
+                                canEdit
                               />
                             )}
                           </>

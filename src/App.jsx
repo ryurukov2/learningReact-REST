@@ -53,7 +53,7 @@ export function fetchProjects(
     .then((r) => r.json())
     .then((data) => {
       setProjects(data.results);
-      console.log(data.count);
+      // console.log(data.count);
       if (pages.current !== Math.ceil(data.count / PAGINATION_ITEMS)) {
         pages.current = Math.ceil(data.count / PAGINATION_ITEMS);
       }

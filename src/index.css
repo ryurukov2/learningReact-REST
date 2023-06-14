@@ -16,6 +16,9 @@
   ul>li{
     @apply rounded-md border-2 border-slate-500 hover:border-slate-100;
   }
+  #no-hover-page li:hover {
+    @apply border-slate-500;  /* Reset hover effect to original color */
+  }
 }
 
 @layer components {
@@ -24,6 +27,9 @@
   }
   .nav-btn {
     @apply px-4 py-2 rounded hover:bg-gray-500 transition-colors;
+  }
+  .base-border{
+    @apply rounded-md border-2 border-slate-500 text-center overflow-clip break-words;
   }
 }
 
