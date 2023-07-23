@@ -4,26 +4,33 @@ import { TaskDisplay } from "./TaskDisplay";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 const HomePage = () => {
   const [latestProject, setLatestProject] = useState([]);
-  // const [latestProjectTasks, setLatestProjectTasks] = useState([]);
+  let headers_to_use = {}
+  try {
+    const token = localStorage.getItem('authorizationToken')
+    headers_to_use = {
+      "Content-Type": "application/json",
+      "Authorization": `Token ${token}`,
+    }
+  }catch (error) {
+    console.log(error)
+  }
   const fetchLastEdited = async () => {
     fetch("http://localhost:8000/api/tasks/last_edited", {
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: headers_to_use,
     })
       .then((r) => {
-        // console.log(r)
+        console.log(r)
         return r;
       })
       .then((r) => r.json())
       .then((data) => {
-        // console.log(data)
         setLatestProject(data);
       })
       .catch((e) => console.log(e));
   };
 
   useEffect(() => {
+    console.log(headers_to_use)
     fetchLastEdited();
   }, []);
 

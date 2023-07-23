@@ -46,7 +46,6 @@ const dataFetch = async (id, setProjectName, setRelatedTasks) => {
   fetch(`http://localhost:8000/api/projects/${id}/`)
     .then((r) => r.json())
     .then((r) => {
-      console.log('test')
       setProjectName(r);
     }).catch((er) => console.log(er));;
   fetch(`http://localhost:8000/api/projects/${id}/tasks/`)
