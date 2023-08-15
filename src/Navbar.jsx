@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { LoginModal } from "./LoginModal";
-export function Navbar({}) {
+export function Navbar({isLoggedIn, setIsLoggedIn}) {
   const [loginModalClicked, setLoginModalClicked] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+ 
   const authToken = useRef('')
   useEffect(() => {
     try{

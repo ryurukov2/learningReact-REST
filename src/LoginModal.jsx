@@ -19,6 +19,7 @@ export function LoginModal({ setLoginModalClicked, setIsLoggedIn }) {
       body: JSON.stringify(fetchData),
     })
       .then((r) => {
+        console.log(r.headers)
         return r.json()})
       .then((data) => {
         if (data.status === 200) {
