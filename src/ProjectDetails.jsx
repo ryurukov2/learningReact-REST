@@ -42,13 +42,21 @@ const updateFetch = async (
     })
     .catch((er) => console.log(er));
 };
-const dataFetch = async (id, setProjectName, setRelatedTasks) => {
-  fetch(`http://localhost:8000/api/projects/${id}/`)
+const dataFetch = async (id, setProjectName, setRelatedTasks, token) => {
+  let headers_to_use = {
+    "Content-Type": "application/json",
+    Authorization: `Token ${token}`,
+  };
+  fetch(`http://localhost:8000/api/projects/${id}/`, {
+    headers: headers_to_use,
+  })
     .then((r) => r.json())
     .then((r) => {
       setProjectName(r);
     }).catch((er) => console.log(er));;
-  fetch(`http://localhost:8000/api/projects/${id}/tasks/`)
+  fetch(`http://localhost:8000/api/projects/${id}/tasks/`, {
+    headers: headers_to_use,
+  })
     .then((r) => r.json())
     .then((r) => {
       setRelatedTasks(r);
@@ -63,6 +71,7 @@ const ProjectDetails = () => {
   const [relatedTasks, setRelatedTasks] = useState([]);
   const [addTaskBtn, setAddTaskBtn] = useState(false);
   const [isEditing, setIsEditing] = useState(null);
+  const token = localStorage.getItem("authorizationToken");
   const [task, setTask] = useState({
     id: "",
     description: "",
@@ -82,9 +91,7 @@ const ProjectDetails = () => {
     RESOLVED: 4,
   };
 
-  //this sorting works only for no pagination. if pagination, sorting impl completely different
   const sortingFunctions = {
-    //returns descending order since it is used first in most cases, and ascending can simply reverse the descending one
     id: (a, b) => b.id - a.id,
     priority: (a, b) => b.priority - a.priority,
     description: (a, b) => b.description.length - a.description.length,
@@ -92,16 +99,13 @@ const ProjectDetails = () => {
       statusValues[b.completion_status] - statusValues[a.completion_status],
   };
   const orderFunctions = {
-    //when all sorting filters are removed and value is null, always returns the default way tasks are fetched from server
     null: (list) => list.sort((a, b) => a.id - b.id),
     asc: (list) => list.reverse(),
     desc: (list) => list,
   };
   const handleSortClick = (type) => {
-    //handle changing the sort criteria on click
     if (type !== sortBy.current["attrib"]) {
       sortBy.current["attrib"] = type;
-      // set to first option (asc)
       sortBy.current["ord"] = sortOrderOptions[1];
     } else {
       sortBy.current["ord"] =
@@ -158,7 +162,7 @@ const ProjectDetails = () => {
   };
 
   useEffect(() => {
-    dataFetch(id, setProjectName, setRelatedTasks);
+    dataFetch(id, setProjectName, setRelatedTasks, token);
   }, []);
 
   return (
