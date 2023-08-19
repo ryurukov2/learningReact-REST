@@ -1,12 +1,10 @@
-
 import { Project } from "./Project";
 import { Link } from "react-router-dom";
 import { DeleteButton } from "./DeleteButton";
 import PageButtons from "./PageButtons";
 import AddProject from "./AddProject";
 import { useState, useEffect, useRef, useContext } from "react";
-import {LoggedInContext} from "./App";
-
+import { LoggedInContext } from "./App";
 
 const ProjectList = () => {
   const [projects, setProjects] = useState([]);
@@ -17,9 +15,9 @@ const ProjectList = () => {
   const isLoggedIn = useContext(LoggedInContext);
   // console.log(isLoggedIn);
   useEffect(() => {
-    if(isLoggedIn === true){
+    if (isLoggedIn === true) {
       fetchProjects();
-    }else{
+    } else {
       setProjects([]);
     }
   }, [currentPage, isLoggedIn]);
@@ -59,20 +57,30 @@ const ProjectList = () => {
   const [toggleAdd, setToggleAdd] = useState(false);
   return (
     <div>
-      <div className="text-end">
-        <button
-          className="btn-primary"
-          onClick={() => setToggleAdd(!toggleAdd)}
-        >
-          Add Project
-        </button>
-      </div>
-      {toggleAdd ? (
-        <AddProject
-          onNewProject={handleProjectChange}
-          setToggleAdd={setToggleAdd}
-        />
-      ) : null}
+      {isLoggedIn ? (
+        <div>
+          <div className="text-end">
+            <button
+              className="btn-primary"
+              onClick={() => setToggleAdd(!toggleAdd)}
+            >
+              Add Project
+            </button>
+          </div>
+          {toggleAdd ? (
+            <AddProject
+              onNewProject={handleProjectChange}
+              setToggleAdd={setToggleAdd}
+            />
+          ) : null}
+        </div>
+      ) : (
+        <div className="text-end">
+          <button className="btn-primary btn-disabled" disabled>
+            Add Project
+          </button>
+        </div>
+      )}
       {pages > 0 ? (
         <PageButtons
           currentPage={currentPage}

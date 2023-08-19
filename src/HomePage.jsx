@@ -14,7 +14,7 @@ const HomePage = ({ isLoggedIn }) => {
       headers: headers_to_use,
     })
       .then((r) => {
-        // console.log(r.status);
+
         if (r.status === 200) {
           return r;
         } else {
@@ -40,7 +40,7 @@ const HomePage = ({ isLoggedIn }) => {
     <div>
       <div>Last Accessed Project</div>
       {latestProject.length !== 0 ? (
-        <div className="w-3/5 h-auto base-border" id="no-hover-page">
+        <div className="w-4/5 h-auto base-border" id="no-hover-page">
           {
             <Link
               to={`/projects/${latestProject.project.id}`}
@@ -48,7 +48,7 @@ const HomePage = ({ isLoggedIn }) => {
             >
               <Project project={latestProject.project} />
               <div className="relative flex-col justify-between items-center w-full group-hover:opacity-20">
-                <div className="absolute">
+                <div className="absolute w-full">
                   <ul>
                     {latestProject.tasks.map((relatedTask) => (
                       <li key={relatedTask.id}>
