@@ -3,6 +3,8 @@ import { useState } from "react";
 export default function AddTask({ id, addTaskToList, toggleBtn }) {
   const [description, setDescription] = useState("");
   const taskPriority = useRef(1);
+  const token = localStorage.getItem("authorizationToken");
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -11,23 +13,27 @@ export default function AddTask({ id, addTaskToList, toggleBtn }) {
       description: description,
       priority: taskPriority.current,
     };
-
+    let headers_to_use = {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+        };
     fetch("http://localhost:8000/api/projects/tasks/add", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: headers_to_use,
       body: JSON.stringify(task),
     })
       .then((r) => {
         if (r.status === 201) {
           return r;
-        }
+        }else{          throw Error(`Status - ${response.status}`);
+      }
       })
       .then((r) => r.json())
       .then((data) => {
         addTaskToList(data);
         toggleBtn();
+      }).catch((error) => {
+        console.error("Error:", error);
       });
   };
 
