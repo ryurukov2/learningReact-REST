@@ -27,6 +27,8 @@ export function App() {
             <Route path="/projects" exact={true} element={<ProjectList />} />
             <Route path="/projects/:id" element={<ProjectDetails />} />
             <Route path="*" element={<Navigate to="/" replace />} />
+
+            {/* github pages doesn't support BrowserRouter Navigate. I'd need to use Hashrouter  */}
           </Routes>
         </LoggedInContext.Provider>
       </Router>
