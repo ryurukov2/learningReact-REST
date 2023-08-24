@@ -1,5 +1,7 @@
 import { Navbar } from "./Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+// import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
 import "./index.css";
 import ProjectList from "./ProjectList";
 import ProjectDetails from "./ProjectDetails";
@@ -17,13 +19,14 @@ export function App() {
   return (
     <div>
       {isLoggedIn !== null &&
-      <Router>
+      <Router basename="/learningReact-REST/">
         <LoggedInContext.Provider value={isLoggedIn}>
           <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
           <Routes>
             <Route path="/" element={<HomePage isLoggedIn={isLoggedIn} />} />
-            <Route path="/projects" element={<ProjectList />} />
+            <Route path="/projects" exact={true} element={<ProjectList />} />
             <Route path="/projects/:id" element={<ProjectDetails />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </LoggedInContext.Provider>
       </Router>
