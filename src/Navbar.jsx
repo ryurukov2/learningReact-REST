@@ -20,7 +20,7 @@ export function Navbar({isLoggedIn, setIsLoggedIn}) {
   const handleLogout = () => {
     console.log(authToken.current)
 
-    fetch(`http://localhost:8000/auth/logout/`, {
+    fetch(`https://radoslavy.pythonanywhere.com/auth/logout/`, {
       method:"POST",
       headers:{
         "Content-Type": "application/json",

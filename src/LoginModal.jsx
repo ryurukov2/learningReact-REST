@@ -11,7 +11,7 @@ export function LoginModal({ setLoginModalClicked, setIsLoggedIn }) {
   const [signupErrorMessage, setSignupErrorMessage] = useState("");
 
   const loginFetch = (fetchData) => {
-    fetch("http://localhost:8000/auth/login/", {
+    fetch("https://radoslavy.pythonanywhere.com/auth/login/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export function LoginModal({ setLoginModalClicked, setIsLoggedIn }) {
       email: signupEmail,
       password: signupPassword,
     };
-    fetch("http://localhost:8000/auth/signup/", {
+    fetch("https://radoslavy.pythonanywhere.com/auth/signup/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

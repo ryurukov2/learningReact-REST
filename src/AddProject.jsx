@@ -15,7 +15,7 @@ const AddProject = (props) => {
       Authorization: `Token ${token}`,
         };
 
-    fetch("http://localhost:8000/api/projects/add", {
+    fetch("https://radoslavy.pythonanywhere.com/api/projects/add", {
       method: "POST",
       headers: headers_to_use,
       body: JSON.stringify(project),

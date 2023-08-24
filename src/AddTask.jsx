@@ -17,7 +17,7 @@ export default function AddTask({ id, addTaskToList, toggleBtn }) {
       "Content-Type": "application/json",
       Authorization: `Token ${token}`,
         };
-    fetch("http://localhost:8000/api/projects/tasks/add", {
+    fetch("https://radoslavy.pythonanywhere.com/api/projects/tasks/add", {
       method: "POST",
       headers: headers_to_use,
       body: JSON.stringify(task),

@@ -4,14 +4,19 @@ import "./index.css";
 import ProjectList from "./ProjectList";
 import ProjectDetails from "./ProjectDetails";
 import HomePage from "./HomePage";
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const LoggedInContext = createContext(null);
 
 export function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  useEffect(() => {
+    const token = localStorage.getItem("authorizationToken")
+    setIsLoggedIn(Boolean(token));
+  }, []);
   return (
     <div>
+      {isLoggedIn !== null &&
       <Router>
         <LoggedInContext.Provider value={isLoggedIn}>
           <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
@@ -22,6 +27,7 @@ export function App() {
           </Routes>
         </LoggedInContext.Provider>
       </Router>
+      }
     </div>
   );
 }

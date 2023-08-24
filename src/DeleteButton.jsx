@@ -16,7 +16,7 @@ const handleDelete = (id, handleProjectChange) => {
   } catch (error) {
     console.error(error)
   }
-  fetch("http://localhost:8000/api/projects/remove/" + id, {
+  fetch("https://radoslavy.pythonanywhere.com/api/projects/remove/" + id, {
     method: "DELETE",
     headers: headers_to_use,
   })

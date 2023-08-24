@@ -30,7 +30,7 @@ const ProjectList = () => {
       "Content-Type": "application/json",
       Authorization: `Token ${token}`,
     };
-    fetch(`http://localhost:8000/api/projects/list?page=${currentPage}`, {
+    fetch(`https://radoslavy.pythonanywhere.com/api/projects/list?page=${currentPage}`, {
       headers: headers_to_use,
     })
       .then((r) => {
@@ -110,9 +110,16 @@ const ProjectList = () => {
           ))
         ) : (
           <div>
-            <p>Log in to view your projects.</p>
-          </div>
-        )}
+          {isLoggedIn ? (
+            <p>Add projects and they will be displayed here!</p>
+            
+            ):(
+              <p>Log in to view your projects.</p>
+              )
+              
+            }
+            </div>
+            )}
       </ul>
       {pages > 0 ? (
         <PageButtons

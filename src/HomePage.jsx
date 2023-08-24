@@ -10,15 +10,17 @@ const HomePage = ({ isLoggedIn }) => {
       "Content-Type": "application/json",
       Authorization: `Token ${token}`,
     };
-    fetch("http://localhost:8000/api/tasks/last_edited", {
+    fetch("https://radoslavy.pythonanywhere.com/api/tasks/last_edited", {
       headers: headers_to_use,
     })
       .then((r) => {
-
         if (r.status === 200) {
           return r;
-        } else {
+        } else if (r.status === 401) {
           throw Error("Not logged in.");
+        } else {
+          console.log(isLoggedIn);
+          throw Error(r.status);
         }
       })
       .then((r) => r.json())
@@ -85,7 +87,7 @@ const HomePage = ({ isLoggedIn }) => {
       ) : (
         <div className="w-3/5 h-500 base-border" id="no-hover-page">
           <div className="relative p-5">
-            <p>Log in to view.</p>
+            {isLoggedIn ? <p>Add projects.</p> : <p>Log in to view.</p>}
           </div>
         </div>
       )}

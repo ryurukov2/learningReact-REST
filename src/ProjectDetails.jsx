@@ -13,7 +13,7 @@ const deleteFetch = async (task, token) => {
     "Content-Type": "application/json",
     Authorization: `Token ${token}`,
   };
-  const r = await fetch(`http://localhost:8000/api/task/${task.id}/remove`, {
+  const r = await fetch(`https://radoslavy.pythonanywhere.com/api/task/${task.id}/remove`, {
     method: "DELETE",
     headers: headers_to_use,
   }).catch((er) => console.log(er));
@@ -32,7 +32,7 @@ const updateFetch = async (
     "Content-Type": "application/json",
     Authorization: `Token ${token}`,
   };
-  fetch(`http://localhost:8000/api/task/${id}/edit`, {
+  fetch(`https://radoslavy.pythonanywhere.com/api/task/${id}/edit`, {
     method: "PUT",
     headers: headers_to_use,
     body: JSON.stringify(updatedTask),
@@ -55,7 +55,7 @@ const dataFetch = async (id, setProjectName, setRelatedTasks, token) => {
     "Content-Type": "application/json",
     Authorization: `Token ${token}`,
   };
-  fetch(`http://localhost:8000/api/projects/${id}/`, {
+  fetch(`https://radoslavy.pythonanywhere.com/api/projects/${id}/`, {
     headers: headers_to_use,
   })
     .then((r) => r.json())
@@ -63,7 +63,7 @@ const dataFetch = async (id, setProjectName, setRelatedTasks, token) => {
       setProjectName(r);
     })
     .catch((er) => console.log(er));
-  fetch(`http://localhost:8000/api/projects/${id}/tasks/`, {
+  fetch(`https://radoslavy.pythonanywhere.com/api/projects/${id}/tasks/`, {
     headers: headers_to_use,
   })
     .then((r) => r.json())
