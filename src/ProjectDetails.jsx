@@ -6,72 +6,9 @@ const AddTask = lazy(() => import("./AddTask.jsx"));
 import { useState, useEffect, useRef, useContext } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { Suspense } from "react";
-import { LoggedInContext } from "./App";
+import { LoggedInContext, BASE_URL } from "./App";
 
-const deleteFetch = async (task, token) => {
-  let headers_to_use = {
-    "Content-Type": "application/json",
-    Authorization: `Token ${token}`,
-  };
-  const r = await fetch(`https://radoslavy.pythonanywhere.com/api/task/${task.id}/remove`, {
-    method: "DELETE",
-    headers: headers_to_use,
-  }).catch((er) => console.log(er));
-  return r;
-};
 
-const updateFetch = async (
-  id,
-  updatedTask,
-  relatedTasks,
-  setRelatedTasks,
-  fetchLoading,
-  token
-) => {
-  let headers_to_use = {
-    "Content-Type": "application/json",
-    Authorization: `Token ${token}`,
-  };
-  fetch(`https://radoslavy.pythonanywhere.com/api/task/${id}/edit`, {
-    method: "PUT",
-    headers: headers_to_use,
-    body: JSON.stringify(updatedTask),
-  })
-    .then((r) => r.json())
-    .then((data) => {
-      const newTasksList = relatedTasks.map((t) => {
-        if (t.id === data.id) {
-          return data;
-        }
-        return t;
-      });
-      fetchLoading.current = null;
-      setRelatedTasks(newTasksList);
-    })
-    .catch((er) => console.log(er));
-};
-const dataFetch = async (id, setProjectName, setRelatedTasks, token) => {
-  let headers_to_use = {
-    "Content-Type": "application/json",
-    Authorization: `Token ${token}`,
-  };
-  fetch(`https://radoslavy.pythonanywhere.com/api/projects/${id}/`, {
-    headers: headers_to_use,
-  })
-    .then((r) => r.json())
-    .then((r) => {
-      setProjectName(r);
-    })
-    .catch((er) => console.log(er));
-  fetch(`https://radoslavy.pythonanywhere.com/api/projects/${id}/tasks/`, {
-    headers: headers_to_use,
-  })
-    .then((r) => r.json())
-    .then((r) => {
-      setRelatedTasks(r);
-    })
-    .catch((er) => console.log(er));
-};
 
 const ProjectDetails = () => {
   const sortOrderOptions = [null, "desc", "asc"];
@@ -82,6 +19,73 @@ const ProjectDetails = () => {
   const [isEditing, setIsEditing] = useState(null);
   const token = localStorage.getItem("authorizationToken");
   const isLoggedIn = useContext(LoggedInContext);
+  const URL = useContext(BASE_URL) 
+
+  const deleteFetch = async (task, token) => {
+
+    let headers_to_use = {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+    };
+    const r = await fetch(`${URL}/api/task/${task.id}/remove`, {
+      method: "DELETE",
+      headers: headers_to_use,
+    }).catch((er) => console.log(er));
+    return r;
+  };
+  
+  const updateFetch = async (
+    id,
+    updatedTask,
+    relatedTasks,
+    setRelatedTasks,
+    fetchLoading,
+    token
+  ) => {
+    let headers_to_use = {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+    };
+    fetch(`${URL}/api/task/${id}/edit`, {
+      method: "PUT",
+      headers: headers_to_use,
+      body: JSON.stringify(updatedTask),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        const newTasksList = relatedTasks.map((t) => {
+          if (t.id === data.id) {
+            return data;
+          }
+          return t;
+        });
+        fetchLoading.current = null;
+        setRelatedTasks(newTasksList);
+      })
+      .catch((er) => console.log(er));
+  };
+  const dataFetch = async (id, setProjectName, setRelatedTasks, token) => {
+    let headers_to_use = {
+      "Content-Type": "application/json",
+      Authorization: `Token ${token}`,
+    };
+    fetch(`${URL}/api/projects/${id}/`, {
+      headers: headers_to_use,
+    })
+      .then((r) => r.json())
+      .then((r) => {
+        setProjectName(r);
+      })
+      .catch((er) => console.log(er));
+    fetch(`${URL}/api/projects/${id}/tasks/`, {
+      headers: headers_to_use,
+    })
+      .then((r) => r.json())
+      .then((r) => {
+        setRelatedTasks(r);
+      })
+      .catch((er) => console.log(er));
+  };
   const [task, setTask] = useState({
     id: "",
     description: "",
@@ -113,6 +117,15 @@ const ProjectDetails = () => {
     asc: (list) => list.reverse(),
     desc: (list) => list,
   };
+  const sortTasks = () => {
+    
+    let sortedTasks = [...relatedTasks].sort(
+      sortingFunctions[sortBy.current.attrib]
+    );
+    sortedTasks = orderFunctions[sortBy.current.ord](sortedTasks);
+
+    setRelatedTasks(sortedTasks);
+  };
   const handleSortClick = (type) => {
     if (type !== sortBy.current["attrib"]) {
       sortBy.current["attrib"] = type;
@@ -127,14 +140,7 @@ const ProjectDetails = () => {
     sortTasks();
     console.log(sortBy.current);
   };
-  const sortTasks = () => {
-    let sortedTasks = [...relatedTasks].sort(
-      sortingFunctions[sortBy.current.attrib]
-    );
-    sortedTasks = orderFunctions[sortBy.current.ord](sortedTasks);
 
-    setRelatedTasks(sortedTasks);
-  };
 
   const handleDeleteClick = () => {
     deleteFetch(task, token)
@@ -170,6 +176,10 @@ const ProjectDetails = () => {
   const addTaskToList = (newTask) => {
     setRelatedTasks([...relatedTasks, newTask]);
   };
+
+  useEffect(() => {
+  sortTasks();
+  }, [relatedTasks.length])
 
   useEffect(() => {
     if (isLoggedIn === true) {

@@ -9,6 +9,8 @@ import HomePage from "./HomePage";
 import { createContext, useState, useEffect } from "react";
 
 export const LoggedInContext = createContext(null);
+export const BASE_URL = createContext("http://localhost:8000")
+// export const BASE_URL = createContext("https://ryurukov2.github.io/learningReact-REST")
 
 export function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -28,7 +30,7 @@ export function App() {
             <Route path="/projects/:id" element={<ProjectDetails />} />
             <Route path="*" element={<Navigate to="/" replace />} />
 
-            {/* github pages doesn't support BrowserRouter Navigate. I'd need to use Hashrouter  */}
+            {/* github pages doesn't support BrowserRouter Navigate. I'd need to use Hashrouter   */}
           </Routes>
         </LoggedInContext.Provider>
       </Router>

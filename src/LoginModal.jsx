@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState, useContext } from "react";
+import {  BASE_URL } from "./App";
 
 export function LoginModal({ setLoginModalClicked, setIsLoggedIn }) {
   const [username, setUsername] = useState("");
@@ -9,9 +10,10 @@ export function LoginModal({ setLoginModalClicked, setIsLoggedIn }) {
   const [formType, setFormType] = useState("login");
   const [errorMessage, setErrorMessage] = useState("");
   const [signupErrorMessage, setSignupErrorMessage] = useState("");
+  const URL = useContext(BASE_URL) 
 
   const loginFetch = (fetchData) => {
-    fetch("https://radoslavy.pythonanywhere.com/auth/login/", {
+    fetch(`${URL}/auth/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -56,7 +58,7 @@ export function LoginModal({ setLoginModalClicked, setIsLoggedIn }) {
       email: signupEmail,
       password: signupPassword,
     };
-    fetch("https://radoslavy.pythonanywhere.com/auth/signup/", {
+    fetch(`${URL}/auth/signup/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

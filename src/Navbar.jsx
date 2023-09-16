@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { LoginModal } from "./LoginModal";
+import {  BASE_URL } from "./App";
 export function Navbar({isLoggedIn, setIsLoggedIn}) {
   const [loginModalClicked, setLoginModalClicked] = useState(false);
- 
+  const URL = useContext(BASE_URL) 
   const authToken = useRef('')
   useEffect(() => {
     try{
@@ -20,7 +21,7 @@ export function Navbar({isLoggedIn, setIsLoggedIn}) {
   const handleLogout = () => {
     console.log(authToken.current)
 
-    fetch(`https://radoslavy.pythonanywhere.com/auth/logout/`, {
+    fetch(`${URL}/auth/logout/`, {
       method:"POST",
       headers:{
         "Content-Type": "application/json",

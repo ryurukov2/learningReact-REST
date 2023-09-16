@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Project } from "./Project";
 import { TaskDisplay } from "./TaskDisplay";
 import { Link } from "react-router-dom";
+import {  BASE_URL } from "./App";
 const HomePage = ({ isLoggedIn }) => {
   const [latestProject, setLatestProject] = useState([]);
   const token = localStorage.getItem("authorizationToken");
+  const URL = useContext(BASE_URL) 
   const fetchLastEdited = async () => {
     let headers_to_use = {
       "Content-Type": "application/json",
       Authorization: `Token ${token}`,
     };
-    fetch("https://radoslavy.pythonanywhere.com/api/tasks/last_edited", {
+    fetch(`${URL}/api/tasks/last_edited`, {
       headers: headers_to_use,
     })
       .then((r) => {
@@ -42,15 +44,15 @@ const HomePage = ({ isLoggedIn }) => {
     <div>
       <div>Last Accessed Project</div>
       {latestProject.length !== 0 ? (
-        <div className="w-4/5 h-auto base-border" id="no-hover-page">
+        <div className="w-4/5 base-border box-border" id="no-hover-page">
           {
             <Link
               to={`/projects/${latestProject.project.id}`}
               className="group"
             >
               <Project project={latestProject.project} />
-              <div className="relative flex-col justify-between items-center w-full group-hover:opacity-20">
-                <div className="absolute w-full">
+              <div className="relative flex-col box-border justify-between items-center w-full">
+                <div className="relative w-full">
                   <ul>
                     {latestProject.tasks.map((relatedTask) => (
                       <li key={relatedTask.id}>
@@ -64,22 +66,23 @@ const HomePage = ({ isLoggedIn }) => {
                     ))}
                   </ul>
                 </div>
-                <div className="relative p-5">
+                {/* <div className=""> */}
                   <div
-                    className="transition-all 
+                    className="absolute w-full h-full top-0 left-0
+                    transition-all 
                                 opacity-0
                                 group-hover:opacity-100
                                 group-hover:text-white
+                               bg-gray-500
+                                bg-opacity-80
                                 group-hover:translate-y-0
                                 "
                   >
-                    <div className="p-2">
-                      <p className="text-lg text-slate-100">
+                      <div className="relative top-1/2 text-2xl group-hover:opacity-100">
                         Click for full project
-                      </p>
                     </div>
                   </div>
-                </div>
+                {/* </div> */}
               </div>
             </Link>
           }

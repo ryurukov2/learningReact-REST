@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { BASE_URL } from "./App";
 const AddProject = (props) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const token = localStorage.getItem("authorizationToken");
+  const URL = useContext(BASE_URL) 
   const onSubmit = (event) => {
     event.preventDefault();
 
@@ -15,7 +17,7 @@ const AddProject = (props) => {
       Authorization: `Token ${token}`,
         };
 
-    fetch("https://radoslavy.pythonanywhere.com/api/projects/add", {
+    fetch(`${URL}/api/projects/add`, {
       method: "POST",
       headers: headers_to_use,
       body: JSON.stringify(project),

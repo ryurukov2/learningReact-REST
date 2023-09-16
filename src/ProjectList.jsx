@@ -4,7 +4,7 @@ import { DeleteButton } from "./DeleteButton";
 import PageButtons from "./PageButtons";
 import AddProject from "./AddProject";
 import { useState, useEffect, useRef, useContext } from "react";
-import { LoggedInContext } from "./App";
+import { LoggedInContext, BASE_URL } from "./App";
 
 const ProjectList = () => {
   const [projects, setProjects] = useState([]);
@@ -13,7 +13,10 @@ const ProjectList = () => {
   const PAGINATION_ITEMS = 20;
   const token = localStorage.getItem("authorizationToken");
   const isLoggedIn = useContext(LoggedInContext);
+  const URL = useContext(BASE_URL) 
+  // console.log(useContext(BASE_URL))
   // console.log(isLoggedIn);
+  console.log(URL)
   useEffect(() => {
     if (isLoggedIn === true) {
       fetchProjects();
@@ -30,7 +33,8 @@ const ProjectList = () => {
       "Content-Type": "application/json",
       Authorization: `Token ${token}`,
     };
-    fetch(`https://radoslavy.pythonanywhere.com/api/projects/list?page=${currentPage}`, {
+    console.log(URL)
+    fetch(`${URL}/api/projects/list?page=${currentPage}`, {
       headers: headers_to_use,
     })
       .then((r) => {
@@ -39,11 +43,13 @@ const ProjectList = () => {
         } else {
           throw Error(`${r.status}`);
         }
-      })
+      }).then(r => {
+        console.log(r)
+        return r})
       .then((r) => r.json())
       .then((data) => {
+        console.log(data);
         setProjects(data.results);
-        // console.log(data.count);
         if (pages.current !== Math.ceil(data.count / PAGINATION_ITEMS)) {
           pages.current = Math.ceil(data.count / PAGINATION_ITEMS);
         }
@@ -51,7 +57,7 @@ const ProjectList = () => {
         window.scrollTo(0, sessionStorage.getItem("scrollPos"));
         sessionStorage.setItem("scrollPos", 0);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.error(e));
   };
   // console.log(props.pages);
   const [toggleAdd, setToggleAdd] = useState(false);
