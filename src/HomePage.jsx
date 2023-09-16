@@ -27,6 +27,7 @@ const HomePage = ({ isLoggedIn }) => {
       })
       .then((r) => r.json())
       .then((data) => {
+        // console.log(data)
         setLatestProject(data);
       })
       .catch((e) => console.log(e));
@@ -50,11 +51,16 @@ const HomePage = ({ isLoggedIn }) => {
               to={`/projects/${latestProject.project.id}`}
               className="group"
             >
-              <Project project={latestProject.project} />
               <div className="relative flex-col box-border justify-between items-center w-full">
+              <Project project={latestProject.project} />
                 <div className="relative w-full">
                   <ul>
-                    {latestProject.tasks.map((relatedTask) => (
+
+                    {latestProject.tasks.length > 0?
+                    
+                    
+                    (latestProject.tasks.map((relatedTask) => (
+                      
                       <li key={relatedTask.id}>
                         <div className="flex">
                           <TaskDisplay
@@ -63,10 +69,11 @@ const HomePage = ({ isLoggedIn }) => {
                           />
                         </div>
                       </li>
-                    ))}
+                    ))):(
+                      <div className="text-xl">No tasks yet</div>
+                    )}
                   </ul>
                 </div>
-                {/* <div className=""> */}
                   <div
                     className="absolute w-full h-full top-0 left-0
                     transition-all 
@@ -78,11 +85,10 @@ const HomePage = ({ isLoggedIn }) => {
                                 group-hover:translate-y-0
                                 "
                   >
-                      <div className="relative top-1/2 text-2xl group-hover:opacity-100">
+                      <div className="relative top-1/3 text-xl group-hover:opacity-100">
                         Click for full project
                     </div>
                   </div>
-                {/* </div> */}
               </div>
             </Link>
           }

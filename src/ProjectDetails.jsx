@@ -118,13 +118,14 @@ const ProjectDetails = () => {
     desc: (list) => list,
   };
   const sortTasks = () => {
-    
-    let sortedTasks = [...relatedTasks].sort(
-      sortingFunctions[sortBy.current.attrib]
-    );
-    sortedTasks = orderFunctions[sortBy.current.ord](sortedTasks);
-
-    setRelatedTasks(sortedTasks);
+    if(!relatedTasks.length==0){
+      let sortedTasks = [...relatedTasks].sort(
+        sortingFunctions[sortBy.current.attrib]
+        );
+        sortedTasks = orderFunctions[sortBy.current.ord](sortedTasks);
+        
+        setRelatedTasks(sortedTasks);
+      }
   };
   const handleSortClick = (type) => {
     if (type !== sortBy.current["attrib"]) {
@@ -242,8 +243,9 @@ const ProjectDetails = () => {
                 </div>
 
                 <div id="non-resolved-display">
-                  <ul>
-                    {relatedTasks.map((relatedTask) =>
+                  <ul>{relatedTasks.length>0 &&
+                   
+                    relatedTasks.map((relatedTask) =>
                       relatedTask.completion_status !== "RESOLVED" ? (
                         <li key={relatedTask.id}>
                           <div className="flex justify-between items-center w-full">
@@ -271,6 +273,7 @@ const ProjectDetails = () => {
                         </li>
                       ) : null
                     )}
+                  
                   </ul>
                 </div>
                 <div>
@@ -282,7 +285,8 @@ const ProjectDetails = () => {
                   </div>
                   <ul>
                     {/* possibly refactor to sorting the tasks into different lists and making a new component to display them */}
-                    {relatedTasks.map((relatedTask) =>
+                    {relatedTasks.length>0 &&
+                    relatedTasks.map((relatedTask) =>
                       relatedTask.completion_status === "RESOLVED" ? (
                         <li key={relatedTask.id}>
                           <div className="flex justify-between items-center w-full">
