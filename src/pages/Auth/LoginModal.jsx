@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import {  BASE_URL } from "./App";
+import {  BASE_URL } from "../../App";
 
 export function LoginModal({ setLoginModalClicked, setIsLoggedIn }) {
   const [username, setUsername] = useState("");

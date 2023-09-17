@@ -1,11 +1,11 @@
-import { Navbar } from "./Navbar";
+import { Navbar } from "./components/Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 // import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { Navigate } from 'react-router-dom';
 import "./index.css";
-import ProjectList from "./ProjectList";
-import ProjectDetails from "./ProjectDetails";
-import HomePage from "./HomePage";
+import ProjectList from "./pages/ProjectsPage/ProjectList";
+import ProjectDetails from "./pages/ProjectDetailPage/ProjectDetails";
+import HomePage from "./pages/HomePage/HomePage";
 import { createContext, useState, useEffect } from "react";
 
 export const LoggedInContext = createContext(null);

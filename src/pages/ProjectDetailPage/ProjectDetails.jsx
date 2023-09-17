@@ -1,12 +1,12 @@
 import { lazy } from "react";
 import { TaskDisplay } from "./TaskDisplay";
 import { TaskEdit } from "./TaskEdit";
-import { Loading } from "./Loading";
+import { Loading } from "../../components/Loading";
 const AddTask = lazy(() => import("./AddTask.jsx"));
 import { useState, useEffect, useRef, useContext } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { Suspense } from "react";
-import { LoggedInContext, BASE_URL } from "./App";
+import { LoggedInContext, BASE_URL } from "../../App";
 
 
 

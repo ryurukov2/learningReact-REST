@@ -1,10 +1,10 @@
-import { Project } from "./Project";
+import { Project } from "../../components/Project";
 import { Link } from "react-router-dom";
-import { DeleteButton } from "./DeleteButton";
-import PageButtons from "./PageButtons";
+import { DeleteButton } from "../../components/DeleteButton";
+import PageButtons from "../../components/PageButtons";
 import AddProject from "./AddProject";
 import { useState, useEffect, useRef, useContext } from "react";
-import { LoggedInContext, BASE_URL } from "./App";
+import { LoggedInContext, BASE_URL } from "../../App";
 
 const ProjectList = () => {
   const [projects, setProjects] = useState([]);

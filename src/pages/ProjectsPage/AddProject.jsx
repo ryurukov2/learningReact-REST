@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { BASE_URL } from "./App";
+import { BASE_URL } from "../../App";
 const AddProject = (props) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");

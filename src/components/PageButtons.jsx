@@ -1,4 +1,4 @@
-import { preChangeSteps } from "./HelperFunctions";
+import { preChangeSteps } from "../HelperFunctions";
 
 const PageButtons = ({ currentPage, numPages, setCurrentPage }) => {
   // console.log(numPages);

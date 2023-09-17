@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
-import { Project } from "./Project";
-import { TaskDisplay } from "./TaskDisplay";
+import { Project } from "../../components/Project";
+import { TaskDisplay } from "../ProjectDetailPage/TaskDisplay";
 import { Link } from "react-router-dom";
-import {  BASE_URL } from "./App";
+import {  BASE_URL } from "../../App";
 const HomePage = ({ isLoggedIn }) => {
   const [latestProject, setLatestProject] = useState([]);
   const token = localStorage.getItem("authorizationToken");

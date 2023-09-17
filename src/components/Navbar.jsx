@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
-import { LoginModal } from "./LoginModal";
-import {  BASE_URL } from "./App";
+import { LoginModal } from "../pages/Auth/LoginModal";
+import {  BASE_URL } from "../App";
 export function Navbar({isLoggedIn, setIsLoggedIn}) {
   const [loginModalClicked, setLoginModalClicked] = useState(false);
   const URL = useContext(BASE_URL) 
