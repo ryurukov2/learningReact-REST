@@ -47,7 +47,7 @@ export default function AddTask({ id, addTaskToList, toggleBtn }) {
 
   return (
     <div
-      className="fixed inset-0 bg-gray-600 bg-opacity-80 flex items-center justify-center"
+      className="fixed inset-0 bg-gray-600 bg-opacity-80 flex items-center justify-center z-50"
       onClick={toggleBtn}
     >
       <div
