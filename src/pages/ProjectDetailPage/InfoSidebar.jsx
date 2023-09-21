@@ -7,12 +7,12 @@ export function InfoSidebar({
   id,
   token,
   URL,
+  created_on,
 }) {
-  const [assigneeEmail, setAssigneeEmail] = useState(false);
   const [projectOwner, setProjectOwner] = useState([]);
   const [projectAssigned, setProjectAssigned] = useState([]);
+  const created = new Date(created_on);
   const fetchOwnerAndAssigned = () => {
-    console.log("fetching");
     const headers_to_use = {
       "Content-Type": "application/json",
       Authorization: `Token ${token}`,
@@ -29,29 +29,26 @@ export function InfoSidebar({
           //   console.log(data.owner);
           setProjectOwner(data.owner);
         } else {
-          console.log(data);
-          throw Error(`${data.detail}`);
+          throw new Error(`${data.detail}`);
         }
       })
       .catch((e) => console.error(e));
 
-    fetch(`${URL}/api/projects/${id}/retrieve_assigned`, {
+    fetch(`${URL}/api/projects/${id}/list_assigned`, {
       headers: headers_to_use,
     })
-      .then((r) => {
-        console.log(r)
-        return r.json();
-      })
-      .then((data) => {
-            console.log(data);
-        if (data.status === 200) {
-          setProjectOwner(data.owner);
+      .then(async (response) => {
+        if (response.ok) {
+          const data = await response.json();
+          setProjectAssigned(data.results);
         } else {
-          console.log(data);
-          throw Error(`${data.detail}`);
+          const data_1 = await response.json();
+          throw new Error(data_1.detail || "Something went wrong");
         }
       })
-      .catch((e) => console.error(e));
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   useEffect(() => {
@@ -60,20 +57,18 @@ export function InfoSidebar({
 
   return (
     <div className="base-border h-fit max-h-fit sticky top-4 text-right z-0">
-      <div className="grid grid-cols-[min-content,1fr] place-content-center justify-items-start items-center gap-2 p-4 max-w-fit max-h-fit">
-        {/* <div className="flex gap-2 justify-center place-items-center"> */}
+      <div className="grid grid-cols-[min-content,1fr] place-content-center justify-items-start text-start items-center gap-2 p-4 max-w-fit max-h-fit">
         <div className="">Owner: </div>
         <div> {projectOwner}</div>
-        {/* </div> */}
-        {/* <div className=""> */}
-        {/* <div className="grid grid-col gap-2 justify-center place-items-center"> */}
         <div>Assigned:</div>
         <div className="justify-items-start text-left">
-          <div className="">asd</div>
-          <div>asd</div>
-          <div>asd</div>
-          <div>asdasd</div>
-          {/* </div> */}
+          {projectAssigned.map((assigned) => (
+            <div key={assigned.id}>{assigned.username}</div>
+          ))}
+        </div>
+        <div>Created on:</div>
+        <div>
+          {created.toDateString()} {created.toTimeString().split(" ")[0]}
         </div>
       </div>
       <button
@@ -88,10 +83,9 @@ export function InfoSidebar({
             <AddAssigneeModal
               setAddAssigneeBtn={setAddAssigneeBtn}
               id={id}
-              assigneeEmail={assigneeEmail}
               token={token}
-              setAssigneeEmail={setAssigneeEmail}
               URL={URL}
+              fetchOwnerAndAssigned={fetchOwnerAndAssigned}
             />
           </Suspense>
         )}

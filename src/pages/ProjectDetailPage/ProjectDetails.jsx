@@ -1,4 +1,4 @@
-import { InfoSidebar } from './InfoSidebar';
+import { InfoSidebar } from "./InfoSidebar";
 
 import { lazy } from "react";
 import { TaskDisplay } from "./TaskDisplay";
@@ -203,7 +203,10 @@ const ProjectDetails = () => {
                 <h1 className="base-border">{projectName.name}</h1>
                 <div className="base-border">
                   Description:
-                  <div> {projectName.description}</div>
+                  <div>
+                    {" "}
+                    {projectName.description}
+                  </div>
                 </div>
               </div>
             </div>
@@ -322,7 +325,14 @@ const ProjectDetails = () => {
               <div>No tasks for this project yet</div>
             )}
           </div>
-<InfoSidebar   setAddAssigneeBtn={setAddAssigneeBtn} addAssigneeBtn={addAssigneeBtn} id={id} token={token} URL={URL}  />
+          <InfoSidebar
+            setAddAssigneeBtn={setAddAssigneeBtn}
+            addAssigneeBtn={addAssigneeBtn}
+            id={id}
+            token={token}
+            URL={URL}
+            created_on={projectName.created_on}
+          />
         </div>
       )}
     </div>
