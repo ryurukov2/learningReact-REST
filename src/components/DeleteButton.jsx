@@ -15,7 +15,6 @@ export function DeleteButton({  projectId, handleProjectChange}) {
       headers_to_use = {
         'Authorization': `Token ${token}`,
       }
-      console.log(headers_to_use)
     } catch (error) {
       console.error(error)
     }

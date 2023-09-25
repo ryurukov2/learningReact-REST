@@ -14,7 +14,6 @@ export function AddAssigneeModal({
   const o2 = 'opacity-100'
   function handleAddAssignee(e) {
     e.preventDefault();
-    console.log(assigneeEmail);
     let email = {
       username: assigneeEmail,
     };
@@ -40,10 +39,6 @@ export function AddAssigneeModal({
           throw new Error(`${data.detail}`);
         }
       })
-      // .then((data) => {
-      //   console.log(data)
-      //   throw new Error(`${data.detail}`);
-      // })
       .catch((e) => {
         console.error(e);
       });

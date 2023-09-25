@@ -14,9 +14,6 @@ const ProjectList = () => {
   const token = localStorage.getItem("authorizationToken");
   const isLoggedIn = useContext(LoggedInContext);
   const URL = useContext(BASE_URL) 
-  // console.log(useContext(BASE_URL))
-  // console.log(isLoggedIn);
-  console.log(URL)
   useEffect(() => {
     if (isLoggedIn === true) {
       fetchProjects();
@@ -33,7 +30,6 @@ const ProjectList = () => {
       "Content-Type": "application/json",
       Authorization: `Token ${token}`,
     };
-    console.log(URL)
     fetch(`${URL}/api/projects/list?page=${currentPage}`, {
       headers: headers_to_use,
     })
@@ -44,11 +40,9 @@ const ProjectList = () => {
           throw Error(`${r.status}`);
         }
       }).then(r => {
-        console.log(r)
         return r})
       .then((r) => r.json())
       .then((data) => {
-        console.log(data);
         setProjects(data.results);
         if (pages.current !== Math.ceil(data.count / PAGINATION_ITEMS)) {
           pages.current = Math.ceil(data.count / PAGINATION_ITEMS);
@@ -59,7 +53,6 @@ const ProjectList = () => {
       })
       .catch((e) => console.error(e));
   };
-  // console.log(props.pages);
   const [toggleAdd, setToggleAdd] = useState(false);
   return (
     <div>

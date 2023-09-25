@@ -19,7 +19,6 @@ export function Navbar({isLoggedIn, setIsLoggedIn}) {
     }
   }, [isLoggedIn])
   const handleLogout = () => {
-    console.log(authToken.current)
 
     fetch(`${URL}/auth/logout/`, {
       method:"POST",

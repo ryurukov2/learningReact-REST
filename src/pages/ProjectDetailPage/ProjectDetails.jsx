@@ -30,7 +30,7 @@ const ProjectDetails = () => {
     const r = await fetch(`${URL}/api/task/${task.id}/remove`, {
       method: "DELETE",
       headers: headers_to_use,
-    }).catch((er) => console.log(er));
+    }).catch((er) => console.error(er));
     return r;
   };
 
@@ -62,7 +62,7 @@ const ProjectDetails = () => {
         fetchLoading.current = null;
         setRelatedTasks(newTasksList);
       })
-      .catch((er) => console.log(er));
+      .catch((er) => console.error(er));
   };
   const dataFetch = async (id, setProjectName, setRelatedTasks, token) => {
     let headers_to_use = {
@@ -76,7 +76,7 @@ const ProjectDetails = () => {
       .then((r) => {
         setProjectName(r);
       })
-      .catch((er) => console.log(er));
+      .catch((er) => console.error(er));
     fetch(`${URL}/api/projects/${id}/tasks/`, {
       headers: headers_to_use,
     })
@@ -84,7 +84,7 @@ const ProjectDetails = () => {
       .then((r) => {
         setRelatedTasks(r);
       })
-      .catch((er) => console.log(er));
+      .catch((er) => console.error(er));
   };
   const [task, setTask] = useState({
     id: "",
@@ -139,7 +139,6 @@ const ProjectDetails = () => {
         ];
     }
     sortTasks();
-    console.log(sortBy.current);
   };
 
   const handleDeleteClick = () => {
@@ -149,7 +148,7 @@ const ProjectDetails = () => {
           setRelatedTasks(relatedTasks.filter((t) => t.id !== task.id));
         }
       })
-      .catch((er) => console.log(er));
+      .catch((er) => console.error(er));
   };
 
   const handleEditOnclick = (relTask) => {

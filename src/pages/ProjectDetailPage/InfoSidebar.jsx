@@ -26,7 +26,6 @@ export function InfoSidebar({
       })
       .then((data) => {
         if (data.status === 200) {
-          //   console.log(data.owner);
           setProjectOwner(data.owner);
         } else {
           throw new Error(`${data.detail}`);
@@ -56,8 +55,8 @@ export function InfoSidebar({
   }, []);
 
   return (
-    <div className="base-border h-fit max-h-fit sticky top-4 text-right z-0">
-      <div className="grid grid-cols-[min-content,1fr] place-content-center justify-items-start text-start items-center gap-2 p-4 max-w-fit max-h-fit">
+    <div className="base-border w-fit h-fit max-h-fit sticky top-4 text-right z-0">
+      <div className="grid grid-cols-[min-content,1fr] place-content-center justify-items-start text-start items-center gap-2 p-4 w-fit max-h-fit">
         <div className="">Owner: </div>
         <div> {projectOwner}</div>
         <div>Assigned:</div>

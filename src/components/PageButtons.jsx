@@ -1,7 +1,6 @@
 import { preChangeSteps } from "../HelperFunctions";
 
 const PageButtons = ({ currentPage, numPages, setCurrentPage }) => {
-  // console.log(numPages);
   const buttons = [...Array(numPages).keys()].map((_, i) => {
     return (
       <button className="px-2 py-0 m-0.5 bg-gray-500 text-white rounded-lg focus:outline-none hover:bg-gray-700" key={i} onClick={() => {

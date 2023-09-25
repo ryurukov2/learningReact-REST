@@ -1,17 +1,32 @@
+import { DashboardHome } from './DashboardHome';
+import { LeftSideHome } from "./LeftSideHome";
 import { useEffect, useState, useContext } from "react";
-import { Project } from "../../components/Project";
-import { TaskDisplay } from "../ProjectDetailPage/TaskDisplay";
-import { Link } from "react-router-dom";
-import {  BASE_URL } from "../../App";
+import { BASE_URL } from "../../App";
 const HomePage = ({ isLoggedIn }) => {
   const [latestProject, setLatestProject] = useState([]);
   const token = localStorage.getItem("authorizationToken");
-  const URL = useContext(BASE_URL) 
+  const URL = useContext(BASE_URL);
+  const [dashboardInfo, setDashboardInfo] = useState([]);
+  let headers_to_use = {
+    "Content-Type": "application/json",
+    Authorization: `Token ${token}`,
+  };
+  const fetchDashboardInfo = async () => {
+    fetch(`${URL}/api/projects/dashboard`, {
+      headers: headers_to_use,
+    }).then(r => {
+      if(r.status===200){
+        return r.json()
+      }else if(r.status === 401) {
+        throw Error("Not logged in.");
+      } else {
+        throw Error(r.status);
+      }
+    }).then((data) => {
+      setDashboardInfo(data)
+    });
+  };
   const fetchLastEdited = async () => {
-    let headers_to_use = {
-      "Content-Type": "application/json",
-      Authorization: `Token ${token}`,
-    };
     fetch(`${URL}/api/tasks/last_edited`, {
       headers: headers_to_use,
     })
@@ -21,85 +36,34 @@ const HomePage = ({ isLoggedIn }) => {
         } else if (r.status === 401) {
           throw Error("Not logged in.");
         } else {
-          console.log(isLoggedIn);
           throw Error(r.status);
         }
       })
       .then((r) => r.json())
       .then((data) => {
-        // console.log(data)
         setLatestProject(data);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.error(e));
   };
 
   useEffect(() => {
     if (isLoggedIn) {
       fetchLastEdited();
+      fetchDashboardInfo();
     } else {
       setLatestProject([]);
     }
   }, [isLoggedIn]);
 
   return (
-    <div>
-      <div>Last Accessed Project</div>
-      {latestProject.length !== 0 ? (
-        <div className="w-4/5 base-border box-border" id="no-hover-page">
-          {
-            <Link
-              to={`/projects/${latestProject.project.id}`}
-              className="group"
-            >
-              <div className="relative flex-col box-border justify-between items-center w-full">
-              <Project project={latestProject.project} />
-                <div className="relative w-full">
-                  <ul>
-
-                    {latestProject.tasks.length > 0?
-                    
-                    
-                    (latestProject.tasks.map((relatedTask) => (
-                      
-                      <li key={relatedTask.id}>
-                        <div className="flex">
-                          <TaskDisplay
-                            relatedTask={relatedTask}
-                            canEdit={false}
-                          />
-                        </div>
-                      </li>
-                    ))):(
-                      <div className="text-xl">No tasks yet</div>
-                    )}
-                  </ul>
-                </div>
-                  <div
-                    className="absolute w-full h-full top-0 left-0
-                    transition-all 
-                                opacity-0
-                                group-hover:opacity-100
-                                group-hover:text-white
-                               bg-gray-500
-                                bg-opacity-80
-                                group-hover:translate-y-0
-                                "
-                  >
-                      <div className="relative top-1/3 text-xl group-hover:opacity-100">
-                        Click for full project
-                    </div>
-                  </div>
-              </div>
-            </Link>
-          }
-        </div>
-      ) : (
-        <div className="w-3/5 h-500 base-border" id="no-hover-page">
-          <div className="relative p-5">
-            {isLoggedIn ? <p>Add projects.</p> : <p>Log in to view.</p>}
-          </div>
-        </div>
-      )}
+    <div className="flex gap-10 flex-wrap flex-row-reverse justify-center">
+      
+      <div className="w-fit">
+       <DashboardHome dashboardInfo={dashboardInfo} isLoggedIn={isLoggedIn}/>
+      </div>
+      <div className="grow w-fit">
+        <LeftSideHome isLoggedIn={isLoggedIn} latestProject={latestProject} />
+      </div>
     </div>
   );
 };

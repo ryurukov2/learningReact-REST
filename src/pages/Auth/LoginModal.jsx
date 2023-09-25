@@ -21,17 +21,14 @@ export function LoginModal({ setLoginModalClicked, setIsLoggedIn }) {
       body: JSON.stringify(fetchData),
     })
       .then((r) => {
-        // console.log(r.headers)
         return r.json()})
       .then((data) => {
         if (data.status === 200) {
-          // console.log(data.data.Token);
           localStorage.setItem("authorizationToken", data.data.Token);
           setIsLoggedIn(true);
           setLoginModalClicked(false);
         } else {
           setErrorMessage(data.message);
-          console.log(errorMessage);
           throw Error(
             `Login failed. Status - ${data.status}. Error - ${data.message}`
           );
