@@ -48,6 +48,7 @@ export function Navbar({isLoggedIn, setIsLoggedIn}) {
           <Link className="nav-btn mx-2" to={`/projects`}>
             Projects
           </Link>
+          <Link className="nav-btn mx-2" to={'/analytics'}>Analytics</Link>
         </div>
         <div>
           {!isLoggedIn ? 
