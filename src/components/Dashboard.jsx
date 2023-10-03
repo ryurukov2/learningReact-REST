@@ -66,12 +66,12 @@ export function DashboardHome({ isLoggedIn, hideModal=false }) {
               group-hover:opacity-100
               group-hover:text-white
               bg-gray-500
-              bg-opacity-80
+              bg-opacity-90
               group-hover:translate-y-0
               "
               >
-              <div className="relative top-1/3 text-xl group-hover:opacity-100">
-                Click for mroe detailed analysis
+              <div className="relative top-1/3 text-xl group-hover:opacity-100 p-2">
+                Click for more detailed analysis
               </div>
             </div>
                 </Link>

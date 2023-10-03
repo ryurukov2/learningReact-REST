@@ -26,7 +26,6 @@ export function DeleteButton({  projectId, handleProjectChange}) {
         console.error(error);
       })
       .finally(() => {
-        // window.scrollTo(0, sessionStorage.getItem("scrollPos"));
         handleProjectChange();
       });
   };

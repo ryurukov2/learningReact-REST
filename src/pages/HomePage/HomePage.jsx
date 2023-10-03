@@ -34,21 +34,22 @@ const HomePage = ({ isLoggedIn }) => {
   useEffect(() => {
     if (isLoggedIn) {
       fetchLastEdited();
-      // fetchDashboardInfo();
     } else {
       setLatestProject([]);
     }
   }, [isLoggedIn]);
 
   return (
-    <div className="flex gap-10 flex-wrap flex-row-reverse justify-center">
+    <div className="flex gap-10 justify-center max-xl:flex-wrap-reverse">
       
-      <div className="w-fit">
-       <DashboardHome isLoggedIn={isLoggedIn} hideModal={false}/>
-      </div>
-      <div className="grow w-fit">
+      <div className="grow">
+
         <LeftSideHome isLoggedIn={isLoggedIn} latestProject={latestProject} />
       </div>
+      <div className="w-fit shrink-0">
+       <DashboardHome isLoggedIn={isLoggedIn} hideModal={false}/>
+      </div>
+
     </div>
   );
 };

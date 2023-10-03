@@ -10,8 +10,8 @@ import { createContext, useState, useEffect } from "react";
 import { AnalyticsPage } from "./pages/Analytics/Analytics";
 
 export const LoggedInContext = createContext(null);
-export const BASE_URL = createContext("http://localhost:8000")
-// export const BASE_URL = createContext("https://ryurukov2.github.io/learningReact-REST")
+// export const BASE_URL = createContext("http://localhost:8000")
+export const BASE_URL = createContext("https://ryurukov2.github.io/learningReact-REST")
 
 export function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
